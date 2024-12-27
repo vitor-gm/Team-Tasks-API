@@ -1,4 +1,4 @@
-package com.example.team_tasks.model;
+package com.example.team_tasks.model.teamTask;
 
 import jakarta.persistence.*;
 import lombok.*;

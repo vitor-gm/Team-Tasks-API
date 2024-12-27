@@ -1,15 +1,12 @@
 package com.example.team_tasks.controller;
 
-import com.example.team_tasks.model.TeamTask;
-import com.example.team_tasks.repository.TeamTaskRepository;
+import com.example.team_tasks.model.teamTask.TeamTask;
 import com.example.team_tasks.service.TeamTaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/api/team-tasks")

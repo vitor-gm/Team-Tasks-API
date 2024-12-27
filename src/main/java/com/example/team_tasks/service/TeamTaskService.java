@@ -1,6 +1,6 @@
 package com.example.team_tasks.service;
 
-import com.example.team_tasks.model.TeamTask;
+import com.example.team_tasks.model.teamTask.TeamTask;
 import com.example.team_tasks.repository.TeamTaskRepository;
 import org.springframework.stereotype.Service;
 
