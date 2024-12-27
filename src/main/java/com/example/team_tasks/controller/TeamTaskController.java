@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -15,8 +16,10 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class TeamTaskController {
 
     private final TeamTaskService teamTaskService;
+
     public TeamTaskController(TeamTaskService teamTaskService) {
         this.teamTaskService = teamTaskService;
+
     }
 
     @PostMapping
@@ -37,9 +40,11 @@ public class TeamTaskController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeamTask(@PathVariable Long id) {
+    public ResponseEntity<Optional<TeamTask>> deleteTeamTask(@PathVariable Long id) {
+        Optional<TeamTask> taskDeleted = teamTaskService.getTeamTaskById(id);
         teamTaskService.deleteTeamTask(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(taskDeleted);
+
 
     }
 

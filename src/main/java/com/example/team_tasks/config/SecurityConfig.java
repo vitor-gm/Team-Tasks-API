@@ -17,13 +17,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // Enable CORS
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/team-tasks/**").permitAll() // Allow all requests to /api/team-tasks/**
+                                .requestMatchers("/api/team-tasks/**").permitAll()
                 )
-                .httpBasic(Customizer.withDefaults()); // Use HTTP Basic authentication
+                .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 }
