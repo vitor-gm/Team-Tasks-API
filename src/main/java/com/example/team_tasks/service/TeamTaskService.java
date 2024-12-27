@@ -2,7 +2,6 @@ package com.example.team_tasks.service;
 
 import com.example.team_tasks.model.TeamTask;
 import com.example.team_tasks.repository.TeamTaskRepository;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +17,18 @@ public class TeamTaskService {
         this.teamTaskRepository = teamTaskRepository;
     }
 
+
+
+    public TeamTask createTeamTask(TeamTask teamTask) {
+        return teamTaskRepository.save(teamTask);
+    }
+
     public List<TeamTask> getAll() {
         return teamTaskRepository.findAll();
     }
 
-    public TeamTask createTeamTask(Long id, TeamTask teamTask) {
-        return teamTaskRepository.save(teamTask);
+    public Optional<TeamTask> getTeamTaskById(Long id) {
+        return teamTaskRepository.findById(id);
     }
 
     public TeamTask updateTeamTask(Long id, TeamTask taskDetails) {
@@ -35,11 +40,11 @@ public class TeamTaskService {
     }
     public void deleteTeamTask(Long id) {
         Optional teamTask = teamTaskRepository.findById(id);
-        if(teamTask == null){
+        if(teamTask.isEmpty()){
             new RuntimeException ("TeamTask not found for id: " + id);
         }else {
             teamTaskRepository.deleteById(id);
         }
-
+        
     }
 }

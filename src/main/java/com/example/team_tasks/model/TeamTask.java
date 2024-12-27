@@ -3,8 +3,8 @@ package com.example.team_tasks.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "team-task")
-@Table(name = "team-task")
+@Entity(name = "TeamTask")
+@Table(name = "TeamTask")
 @Setter
 @Getter
 @NoArgsConstructor

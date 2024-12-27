@@ -15,16 +15,13 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class TeamTaskController {
 
     private final TeamTaskService teamTaskService;
-    private final TeamTaskRepository teamTaskRepository;
-
-    public TeamTaskController(TeamTaskService taskService, TeamTaskRepository teamTaskRepository) {
-        this.teamTaskService = taskService;
-        this.teamTaskRepository = teamTaskRepository;
+    public TeamTaskController(TeamTaskService teamTaskService) {
+        this.teamTaskService = teamTaskService;
     }
 
-    @PostMapping("/{id}")
+    @PostMapping
     public TeamTask createTeamTask(@RequestBody TeamTask teamTask) {
-        return teamTaskService.createTeamTask(teamTask.getId(), teamTask);
+        return teamTaskService.createTeamTask(teamTask);
 
     }
 
@@ -33,10 +30,17 @@ public class TeamTaskController {
         return teamTaskService.getAll();
     }
 
-    @PutMapping({"/id"})
+    @PutMapping("/{id}")
     public ResponseEntity<TeamTask> updateTeamTask(@PathVariable Long id, @RequestBody TeamTask teamTaskDetails) {
         TeamTask updatedTask = teamTaskService.updateTeamTask(id, teamTaskDetails);
         return ResponseEntity.ok(updatedTask);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTeamTask(@PathVariable Long id) {
+        teamTaskService.deleteTeamTask(id);
+        return ResponseEntity.noContent().build();
+
     }
 
 
