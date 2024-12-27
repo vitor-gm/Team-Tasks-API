@@ -5,22 +5,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults()) // Enable CORS
-                .csrf(csrf -> csrf.disable())
-                .authorizeRequests(authorizeRequests ->
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection
+                .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/team-tasks/**").permitAll()
+                                .requestMatchers("/api/team-tasks/**").permitAll() // Allow all requests to /api/team-tasks/**
                 )
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults()); // Use HTTP Basic authentication
         return http.build();
     }
 }
