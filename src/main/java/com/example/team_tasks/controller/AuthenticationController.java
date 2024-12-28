@@ -1,9 +1,11 @@
 package com.example.team_tasks.controller;
 
 import com.example.team_tasks.model.user.AuthenticationDTO;
+import com.example.team_tasks.model.user.LoginResponseDTO;
 import com.example.team_tasks.model.user.RegisterDTO;
 import com.example.team_tasks.model.user.User;
 import com.example.team_tasks.repository.UserRepository;
+import com.example.team_tasks.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,19 +22,20 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    private final TokenService tokenService;
+    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository userRepository, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
-
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
+        var token = tokenService.generateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok().build();
-
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
@@ -41,8 +44,8 @@ public class AuthenticationController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());
-
         this.userRepository.save(newUser);
+
         return ResponseEntity.ok().build();
 
     }

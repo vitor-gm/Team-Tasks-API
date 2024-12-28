@@ -1,6 +1,6 @@
 package com.example.team_tasks.controller;
 
-import com.example.team_tasks.model.teamTask.TeamTask;
+import com.example.team_tasks.model.task.TeamTask;
 import com.example.team_tasks.service.TeamTaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +13,14 @@ import java.util.Optional;
 public class TeamTaskController {
 
     private final TeamTaskService teamTaskService;
-
     public TeamTaskController(TeamTaskService teamTaskService) {
         this.teamTaskService = teamTaskService;
-
     }
 
     @PostMapping
     public TeamTask createTeamTask(@RequestBody TeamTask teamTask) {
-        return teamTaskService.createTeamTask(teamTask);
 
+        return teamTaskService.createTeamTask(teamTask);
     }
 
     @GetMapping
@@ -33,6 +31,7 @@ public class TeamTaskController {
     @PutMapping("/{id}")
     public ResponseEntity<TeamTask> updateTeamTask(@PathVariable Long id, @RequestBody TeamTask teamTaskDetails) {
         TeamTask updatedTask = teamTaskService.updateTeamTask(id, teamTaskDetails);
+
         return ResponseEntity.ok(updatedTask);
     }
 
@@ -40,11 +39,7 @@ public class TeamTaskController {
     public ResponseEntity<Optional<TeamTask>> deleteTeamTask(@PathVariable Long id) {
         Optional<TeamTask> taskDeleted = teamTaskService.getTeamTaskById(id);
         teamTaskService.deleteTeamTask(id);
+
         return ResponseEntity.ok(taskDeleted);
-
-
     }
-
-
-
 }

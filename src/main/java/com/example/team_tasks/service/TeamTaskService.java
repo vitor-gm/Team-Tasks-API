@@ -1,13 +1,10 @@
 package com.example.team_tasks.service;
 
-import com.example.team_tasks.model.teamTask.TeamTask;
+import com.example.team_tasks.model.task.TeamTask;
 import com.example.team_tasks.repository.TeamTaskRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-
-
 
 @Service
 public class TeamTaskService {
@@ -16,8 +13,6 @@ public class TeamTaskService {
     public TeamTaskService(TeamTaskRepository teamTaskRepository) {
         this.teamTaskRepository = teamTaskRepository;
     }
-
-
 
     public TeamTask createTeamTask(TeamTask teamTask) {
         return teamTaskRepository.save(teamTask);
@@ -36,6 +31,7 @@ public class TeamTaskService {
        teamTask.setTitle(taskDetails.getTitle());
        teamTask.setDescription(taskDetails.getDescription());
        teamTask.setCompleted(taskDetails.isCompleted());
+
        return teamTaskRepository.save(teamTask);
     }
     public void deleteTeamTask(Long id) {
@@ -45,6 +41,5 @@ public class TeamTaskService {
         }else {
             teamTaskRepository.deleteById(id);
         }
-        
     }
 }
