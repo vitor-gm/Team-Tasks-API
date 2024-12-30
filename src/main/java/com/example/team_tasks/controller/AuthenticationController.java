@@ -1,15 +1,14 @@
 package com.example.team_tasks.controller;
 
-import com.example.team_tasks.model.user.AuthenticationDTO;
-import com.example.team_tasks.model.user.LoginResponseDTO;
-import com.example.team_tasks.model.user.RegisterDTO;
-import com.example.team_tasks.model.user.User;
+import com.example.team_tasks.model.user.*;
 import com.example.team_tasks.repository.UserRepository;
 import com.example.team_tasks.service.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,5 +47,23 @@ public class AuthenticationController {
 
         return ResponseEntity.ok().build();
 
+    }
+
+    @PostMapping("/updatePassword")
+    public ResponseEntity update(@RequestBody @Valid UpdatePasswordDTO data) {
+        if(!data.newPassword().equals(data.confirmPassword())) {
+            return ResponseEntity.badRequest().body("Passwords do not match");
+        }
+
+        User user = getAuthenticatedUser();
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.newPassword());
+        user.setPassword(encryptedPassword);
+        this.userRepository.save(user);
+
+        return ResponseEntity.ok().build();
+    }
+
+    private User getAuthenticatedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

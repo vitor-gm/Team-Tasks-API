@@ -30,9 +30,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST,"auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "api/team-tasks").permitAll()
-                        .requestMatchers(HttpMethod.POST, "api/team-tasks").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "api/team-tasks/{id}").permitAll()
+                        .requestMatchers(HttpMethod.POST,"auth/register").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "api/team-tasks").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "api/team-tasks/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
